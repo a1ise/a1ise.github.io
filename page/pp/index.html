@@ -7,7 +7,7 @@
 {  
   "@context":"http://schema.org",
   "@type":"Website",
-  "@id":"http:\/\/a1ise.github.io\/",
+  "@id":"https:\/\/a1ise.github.io\/",
   "author": {
     "@type": "Person",
     "name":  null ,
@@ -15,7 +15,7 @@
   },
   "name":"こんな体験したことある？",
   "description":"プロトタイプ汚染とは？ ざっくりと簡単にプロトタイプ汚染を説明すると、JavaScript(以下js)のオブジェクトに存在する__proto__というプロパティをつたって 任意のプロパティを追加・上書きしてオブジェクトの振る舞いを変える攻撃手法のことです。\nこの手法を理解するためには、jsのプロトタイプチェーンに対する理解が必要なのでまずこちらから説明したいと思います。\n プロトタイプとプロトタイプチェーン 以下の簡単なクラスなどが書かれているコードがあります。\nclass Fag{ constructor(name){ this.name = name } } class AnotherFag extends Fag{ constructor(name, modelName){ super(name) this.modelName = modelName } } let bazelard = new Fag(\u0026#39;Bazelard\u0026#39;) let zelfikar = new AnotherFag(\u0026#39;Zelfikar\u0026#39;, \u0026#39;bazelard\u0026#39;) このコードにはFagクラスとそれを継承したAnotherFagクラスとそれぞれをインスタス化したbazelardオブジェクトとzelfikarオブジェクトが存在します。\nそしてこのbazelardとzelfikarオブジェクトには__proto__という謎のプロパティが既に設定されています。\n __proto__とは __proto__の正体は自身の継承元や生成元となるオブジェクトのprototypeへのゲッター・セッターです。\nbazelard.__proto__ === Fag.prototype \/\/true zelfikar.__proto__ === AnotherFag.prototype \/\/true 図解するとこんな感じです。(FagクラスとAnotherFagクラスの__proto__は省いています。あと分かり辛かったらすみません。)  プロトタイプチェーンとは プロトタイプチェーンはオブジェクトのプロパティやメソッドを探すときに__proto__内を辿っていき__proto__がnullになるまで探索されることをいいます。\nbazelard.hogeを探すときの挙動はこんな感じです\n1、bazelard直下にあるhogeプロパティを探す。見つからない。 2、bazelard.__proto__にあるhogeプロパティを探す。見つからない。\/\/この__proto__が参照する先はFag.prototypeです 3、bazelard.__proto__.__proto__にあるhogeプロパティを探す。見つからない。\/\/この__proto__が参照する先はObject.prototypeです 4、bazelard.__proto__.__proto__.__proto__を探索しようとするが__proto__がnullを返すので探索が終了  プロトタイプ汚染 では本題のプロトタイプ汚染に入りたいと思います。また、コードを以下のように改変してます。\nclass Fag{ constructor(name){ this.name = name } } Fag.",
-  "url":"http:\/\/a1ise.github.io\/page\/pp\/",
+  "url":"https:\/\/a1ise.github.io\/page\/pp\/",
   "keywords":"[]"
 }
 
@@ -51,8 +51,8 @@ class Fag{ constructor(name){ this.name = name } } Fag.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="プロトタイプ汚染を理解したかった">
 <meta name="twitter:title" content="プロトタイプ汚染を理解したかった">
-<meta property="og:url" content="http://a1ise.github.io/page/pp/">
-<meta property="twitter:url" content="http://a1ise.github.io/page/pp/">
+<meta property="og:url" content="https://a1ise.github.io/page/pp/">
+<meta property="twitter:url" content="https://a1ise.github.io/page/pp/">
 <meta property="og:site_name" content="こんな体験したことある？">
 <meta property="og:description" content="プロトタイプ汚染とは？ ざっくりと簡単にプロトタイプ汚染を説明すると、JavaScript(以下js)のオブジェクトに存在する__proto__というプロパティをつたって 任意のプロパティを追加・上書きしてオブジェクトの振る舞いを変える攻撃手法のことです。
 この手法を理解するためには、jsのプロトタイプチェーンに対する理解が必要なのでまずこちらから説明したいと思います。
@@ -113,7 +113,7 @@ class Fag{ constructor(name){ this.name = name } } Fag.">
 
     
 
-    <link rel="canonical" href="http://a1ise.github.io/page/pp/">
+    <link rel="canonical" href="https://a1ise.github.io/page/pp/">
 
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -121,7 +121,7 @@ class Fag{ constructor(name){ this.name = name } } Fag.">
     
     
     
-    <link rel="stylesheet" href="http://a1ise.github.io/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    <link rel="stylesheet" href="https://a1ise.github.io/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
     
     
 
@@ -500,7 +500,7 @@ XSSからRCEなど様々な脆弱性につなげることが出来るという�
     
   
     
-      <div id="cover" style="background-image:url('http://a1ise.github.io/background.png');"></div>
+      <div id="cover" style="background-image:url('https://a1ise.github.io/background.png');"></div>
     
   
 
@@ -513,7 +513,7 @@ XSSからRCEなど様々な脆弱性につなげることが出来るという�
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
-<script src="http://a1ise.github.io/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+<script src="https://a1ise.github.io/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
 
 
 

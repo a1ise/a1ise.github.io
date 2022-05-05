@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>プロトタイプ汚染 on こんな体験したことある？</title>
-    <link>http://a1ise.github.io/tags/%E3%83%97%E3%83%AD%E3%83%88%E3%82%BF%E3%82%A4%E3%83%97%E6%B1%9A%E6%9F%93/</link>
+    <link>https://a1ise.github.io/tags/%E3%83%97%E3%83%AD%E3%83%88%E3%82%BF%E3%82%A4%E3%83%97%E6%B1%9A%E6%9F%93/</link>
     <description>Recent content in プロトタイプ汚染 on こんな体験したことある？</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 May 2022 19:35:58 +0900</lastBuildDate><atom:link href="http://a1ise.github.io/tags/%E3%83%97%E3%83%AD%E3%83%88%E3%82%BF%E3%82%A4%E3%83%97%E6%B1%9A%E6%9F%93/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 05 May 2022 19:35:58 +0900</lastBuildDate><atom:link href="https://a1ise.github.io/tags/%E3%83%97%E3%83%AD%E3%83%88%E3%82%BF%E3%82%A4%E3%83%97%E6%B1%9A%E6%9F%93/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>プロトタイプ汚染を理解したかった</title>
-      <link>http://a1ise.github.io/page/pp/</link>
+      <link>https://a1ise.github.io/page/pp/</link>
       <pubDate>Thu, 05 May 2022 19:35:58 +0900</pubDate>
       
-      <guid>http://a1ise.github.io/page/pp/</guid>
+      <guid>https://a1ise.github.io/page/pp/</guid>
       <description>プロトタイプ汚染とは？ ざっくりと簡単にプロトタイプ汚染を説明すると、JavaScript(以下js)のオブジェクトに存在する__proto__というプロパティをつたって 任意のプロパティを追加・上書きしてオブジェクトの振る舞いを変える攻撃手法のことです。
 この手法を理解するためには、jsのプロトタイプチェーンに対する理解が必要なのでまずこちらから説明したいと思います。
  プロトタイプとプロトタイプチェーン 以下の簡単なクラスなどが書かれているコードがあります。
