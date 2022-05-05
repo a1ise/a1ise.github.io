@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{  
+  "@context":"http://schema.org",
+  "@type":"Website",
+  "@id":"http:\/\/a1ise.github.io\/",
+  "author": {
+    "@type": "Person",
+    "name":  null ,
+    
+  },
+  "name":"こんな体験したことある？",
+  "description":"プロトタイプ汚染とは？ ざっくりと簡単にプロトタイプ汚染を説明すると、JavaScript(以下js)のオブジェクトに存在する__proto__というプロパティをつたって 任意のプロパティを追加・上書きしてオブジェクトの振る舞いを変える攻撃手法のことです。\nこの手法を理解するためには、jsのプロトタイプチェーンに対する理解が必要なのでまずこちらから説明したいと思います。\n プロトタイプとプロトタイプチェーン 以下の簡単なクラスなどが書かれているコードがあります。\nclass Fag{ constructor(name){ this.name = name } } class AnotherFag extends Fag{ constructor(name, modelName){ super(name) this.modelName = modelName } } let bazelard = new Fag(\u0026#39;Bazelard\u0026#39;) let zelfikar = new AnotherFag(\u0026#39;Zelfikar\u0026#39;, \u0026#39;bazelard\u0026#39;) このコードにはFagクラスとそれを継承したAnotherFagクラスとそれぞれをインスタス化したbazelardオブジェクトとzelfikarオブジェクトが存在します。\nそしてこのbazelardとzelfikarオブジェクトには__proto__という謎のプロパティが既に設定されています。\n __proto__とは __proto__の正体は自身の継承元や生成元となるオブジェクトのprototypeへのゲッター・セッターです。\nbazelard.__proto__ === Fag.prototype \/\/true zelfikar.__proto__ === AnotherFag.prototype \/\/true 図解するとこんな感じです。(FagクラスとAnotherFagクラスの__proto__は省いています。あと分かり辛かったらすみません。)  プロトタイプチェーンとは プロトタイプチェーンはオブジェクトのプロパティやメソッドを探すときに__proto__内を辿っていき__proto__がnullになるまで探索されることをいいます。\nbazelard.hogeを探すときの挙動はこんな感じです\n1、bazelard直下にあるhogeプロパティを探す。見つからない。 2、bazelard.__proto__にあるhogeプロパティを探す。見つからない。\/\/この__proto__が参照する先はFag.prototypeです 3、bazelard.__proto__.__proto__にあるhogeプロパティを探す。見つからない。\/\/この__proto__が参照する先はObject.prototypeです 4、bazelard.__proto__.__proto__.__proto__を探索しようとするが__proto__がnullを返すので探索が終了  プロトタイプ汚染 では本題のプロトタイプ汚染に入りたいと思います。また、コードを以下のように改変してます。\nclass Fag{ constructor(name){ this.name = name } } Fag.",
+  "url":"http:\/\/a1ise.github.io\/page\/pp\/",
+  "keywords":"[]"
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.96.0 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="">
+<meta name="keywords" content="">
+<meta name="description" content="プロトタイプ汚染とは？ ざっくりと簡単にプロトタイプ汚染を説明すると、JavaScript(以下js)のオブジェクトに存在する__proto__というプロパティをつたって 任意のプロパティを追加・上書きしてオブジェクトの振る舞いを変える攻撃手法のことです。
+この手法を理解するためには、jsのプロトタイプチェーンに対する理解が必要なのでまずこちらから説明したいと思います。
+ プロトタイプとプロトタイプチェーン 以下の簡単なクラスなどが書かれているコードがあります。
+class Fag{ constructor(name){ this.name = name } } class AnotherFag extends Fag{ constructor(name, modelName){ super(name) this.modelName = modelName } } let bazelard = new Fag(&#39;Bazelard&#39;) let zelfikar = new AnotherFag(&#39;Zelfikar&#39;, &#39;bazelard&#39;) このコードにはFagクラスとそれを継承したAnotherFagクラスとそれぞれをインスタス化したbazelardオブジェクトとzelfikarオブジェクトが存在します。
+そしてこのbazelardとzelfikarオブジェクトには__proto__という謎のプロパティが既に設定されています。
+ __proto__とは __proto__の正体は自身の継承元や生成元となるオブジェクトのprototypeへのゲッター・セッターです。
+bazelard.__proto__ === Fag.prototype //true zelfikar.__proto__ === AnotherFag.prototype //true 図解するとこんな感じです。(FagクラスとAnotherFagクラスの__proto__は省いています。あと分かり辛かったらすみません。)  プロトタイプチェーンとは プロトタイプチェーンはオブジェクトのプロパティやメソッドを探すときに__proto__内を辿っていき__proto__がnullになるまで探索されることをいいます。
+bazelard.hogeを探すときの挙動はこんな感じです
+1、bazelard直下にあるhogeプロパティを探す。見つからない。 2、bazelard.__proto__にあるhogeプロパティを探す。見つからない。//この__proto__が参照する先はFag.prototypeです 3、bazelard.__proto__.__proto__にあるhogeプロパティを探す。見つからない。//この__proto__が参照する先はObject.prototypeです 4、bazelard.__proto__.__proto__.__proto__を探索しようとするが__proto__がnullを返すので探索が終了  プロトタイプ汚染 では本題のプロトタイプ汚染に入りたいと思います。また、コードを以下のように改変してます。
+class Fag{ constructor(name){ this.name = name } } Fag.">
+
+
+<meta property="og:description" content="プロトタイプ汚染とは？ ざっくりと簡単にプロトタイプ汚染を説明すると、JavaScript(以下js)のオブジェクトに存在する__proto__というプロパティをつたって 任意のプロパティを追加・上書きしてオブジェクトの振る舞いを変える攻撃手法のことです。
+この手法を理解するためには、jsのプロトタイプチェーンに対する理解が必要なのでまずこちらから説明したいと思います。
+ プロトタイプとプロトタイプチェーン 以下の簡単なクラスなどが書かれているコードがあります。
+class Fag{ constructor(name){ this.name = name } } class AnotherFag extends Fag{ constructor(name, modelName){ super(name) this.modelName = modelName } } let bazelard = new Fag(&#39;Bazelard&#39;) let zelfikar = new AnotherFag(&#39;Zelfikar&#39;, &#39;bazelard&#39;) このコードにはFagクラスとそれを継承したAnotherFagクラスとそれぞれをインスタス化したbazelardオブジェクトとzelfikarオブジェクトが存在します。
+そしてこのbazelardとzelfikarオブジェクトには__proto__という謎のプロパティが既に設定されています。
+ __proto__とは __proto__の正体は自身の継承元や生成元となるオブジェクトのprototypeへのゲッター・セッターです。
+bazelard.__proto__ === Fag.prototype //true zelfikar.__proto__ === AnotherFag.prototype //true 図解するとこんな感じです。(FagクラスとAnotherFagクラスの__proto__は省いています。あと分かり辛かったらすみません。)  プロトタイプチェーンとは プロトタイプチェーンはオブジェクトのプロパティやメソッドを探すときに__proto__内を辿っていき__proto__がnullになるまで探索されることをいいます。
+bazelard.hogeを探すときの挙動はこんな感じです
+1、bazelard直下にあるhogeプロパティを探す。見つからない。 2、bazelard.__proto__にあるhogeプロパティを探す。見つからない。//この__proto__が参照する先はFag.prototypeです 3、bazelard.__proto__.__proto__にあるhogeプロパティを探す。見つからない。//この__proto__が参照する先はObject.prototypeです 4、bazelard.__proto__.__proto__.__proto__を探索しようとするが__proto__がnullを返すので探索が終了  プロトタイプ汚染 では本題のプロトタイプ汚染に入りたいと思います。また、コードを以下のように改変してます。
+class Fag{ constructor(name){ this.name = name } } Fag.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="プロトタイプ汚染を理解したかった">
+<meta name="twitter:title" content="プロトタイプ汚染を理解したかった">
+<meta property="og:url" content="http://a1ise.github.io/page/pp/">
+<meta property="twitter:url" content="http://a1ise.github.io/page/pp/">
+<meta property="og:site_name" content="こんな体験したことある？">
+<meta property="og:description" content="プロトタイプ汚染とは？ ざっくりと簡単にプロトタイプ汚染を説明すると、JavaScript(以下js)のオブジェクトに存在する__proto__というプロパティをつたって 任意のプロパティを追加・上書きしてオブジェクトの振る舞いを変える攻撃手法のことです。
+この手法を理解するためには、jsのプロトタイプチェーンに対する理解が必要なのでまずこちらから説明したいと思います。
+ プロトタイプとプロトタイプチェーン 以下の簡単なクラスなどが書かれているコードがあります。
+class Fag{ constructor(name){ this.name = name } } class AnotherFag extends Fag{ constructor(name, modelName){ super(name) this.modelName = modelName } } let bazelard = new Fag(&#39;Bazelard&#39;) let zelfikar = new AnotherFag(&#39;Zelfikar&#39;, &#39;bazelard&#39;) このコードにはFagクラスとそれを継承したAnotherFagクラスとそれぞれをインスタス化したbazelardオブジェクトとzelfikarオブジェクトが存在します。
+そしてこのbazelardとzelfikarオブジェクトには__proto__という謎のプロパティが既に設定されています。
+ __proto__とは __proto__の正体は自身の継承元や生成元となるオブジェクトのprototypeへのゲッター・セッターです。
+bazelard.__proto__ === Fag.prototype //true zelfikar.__proto__ === AnotherFag.prototype //true 図解するとこんな感じです。(FagクラスとAnotherFagクラスの__proto__は省いています。あと分かり辛かったらすみません。)  プロトタイプチェーンとは プロトタイプチェーンはオブジェクトのプロパティやメソッドを探すときに__proto__内を辿っていき__proto__がnullになるまで探索されることをいいます。
+bazelard.hogeを探すときの挙動はこんな感じです
+1、bazelard直下にあるhogeプロパティを探す。見つからない。 2、bazelard.__proto__にあるhogeプロパティを探す。見つからない。//この__proto__が参照する先はFag.prototypeです 3、bazelard.__proto__.__proto__にあるhogeプロパティを探す。見つからない。//この__proto__が参照する先はObject.prototypeです 4、bazelard.__proto__.__proto__.__proto__を探索しようとするが__proto__がnullを返すので探索が終了  プロトタイプ汚染 では本題のプロトタイプ汚染に入りたいと思います。また、コードを以下のように改変してます。
+class Fag{ constructor(name){ this.name = name } } Fag.">
+<meta name="twitter:description" content="プロトタイプ汚染とは？ ざっくりと簡単にプロトタイプ汚染を説明すると、JavaScript(以下js)のオブジェクトに存在する__proto__というプロパティをつたって 任意のプロパティを追加・上書きしてオブジェクトの振る舞いを変える攻撃手法のことです。
+この手法を理解するためには、jsのプロトタイプチェーンに対する理解が必要なのでまずこちらから説明したいと思います。
+ プロトタイプとプロトタイプチェーン 以下の簡単なクラスなどが書かれているコードがあります。
+class Fag{ constructor(name){ this.name = name } } class AnotherFag extends Fag{ constructor(name, modelName){ super(name) this.modelName = modelName } } let bazelard = new Fag(&#39;Bazelard&#39;) let zelfikar = new AnotherFag(&#39;Zelfikar&#39;, &#39;bazelard&#39;) このコードにはFagクラスとそれを継承したAnotherFagクラスとそれぞれをインスタス化したbazelardオブジェクトとzelfikarオブジェクトが存在します。
+そしてこのbazelardとzelfikarオブジェクトには__proto__という謎のプロパティが既に設定されています。
+ __proto__とは __proto__の正体は自身の継承元や生成元となるオブジェクトのprototypeへのゲッター・セッターです。
+bazelard.__proto__ === Fag.prototype //true zelfikar.__proto__ === AnotherFag.prototype //true 図解するとこんな感じです。(FagクラスとAnotherFagクラスの__proto__は省いています。あと分かり辛かったらすみません。)  プロトタイプチェーンとは プロトタイプチェーンはオブジェクトのプロパティやメソッドを探すときに__proto__内を辿っていき__proto__がnullになるまで探索されることをいいます。
+bazelard.hogeを探すときの挙動はこんな感じです
+1、bazelard直下にあるhogeプロパティを探す。見つからない。 2、bazelard.__proto__にあるhogeプロパティを探す。見つからない。//この__proto__が参照する先はFag.prototypeです 3、bazelard.__proto__.__proto__にあるhogeプロパティを探す。見つからない。//この__proto__が参照する先はObject.prototypeです 4、bazelard.__proto__.__proto__.__proto__を探索しようとするが__proto__がnullを返すので探索が終了  プロトタイプ汚染 では本題のプロトタイプ汚染に入りたいと思います。また、コードを以下のように改変してます。
+class Fag{ constructor(name){ this.name = name } } Fag.">
+<meta property="og:locale" content="ja">
+
+  
+    <meta property="article:published_time" content="2022-05-05T19:35:58">
+  
+  
+    <meta property="article:modified_time" content="2022-05-05T19:35:58">
+  
+  
+  
+  
+    
+      <meta property="article:tag" content="セキュリティ">
+    
+      <meta property="article:tag" content="プロトタイプ汚染">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+
+
+
+
+    <title>プロトタイプ汚染を理解したかった</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="http://a1ise.github.io/page/pp/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="http://a1ise.github.io/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="2">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/" aria-label="ホームページへ">こんな体験したことある？</a>
+  </div>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="2">
+  <div class="sidebar-container">
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">ホーム</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/a1ise" target="_blank" rel="noopener" title="GitHub">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="2"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      プロトタイプ汚染を理解したかった
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2022-05-05T19:35:58&#43;09:00">
+        
+  
+  
+  
+  
+    2022-05-05
+  
+
+      </time>
+    
+    
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h1 id="プロトタイプ汚染とは">プロトタイプ汚染とは？</h1>
+<p>ざっくりと簡単にプロトタイプ汚染を説明すると、JavaScript(以下js)のオブジェクトに存在する<code>__proto__</code>というプロパティをつたって
+任意のプロパティを追加・上書きしてオブジェクトの振る舞いを変える攻撃手法のことです。<br>
+この手法を理解するためには、jsのプロトタイプチェーンに対する理解が必要なのでまずこちらから説明したいと思います。</p>
+<hr>
+<h1 id="プロトタイプとプロトタイプチェーン">プロトタイプとプロトタイプチェーン</h1>
+<p>以下の簡単なクラスなどが書かれているコードがあります。</p>
+<pre tabindex="0"><code>class Fag{
+    constructor(name){
+        this.name = name
+    }
+}
+
+class AnotherFag extends Fag{
+    constructor(name, modelName){
+        super(name)
+        this.modelName = modelName
+    }
+}
+
+let bazelard = new Fag(&#39;Bazelard&#39;)
+let zelfikar = new AnotherFag(&#39;Zelfikar&#39;, &#39;bazelard&#39;)
+</code></pre><p>このコードにはFagクラスとそれを継承したAnotherFagクラスとそれぞれをインスタス化したbazelardオブジェクトとzelfikarオブジェクトが存在します。<br>
+そしてこのbazelardとzelfikarオブジェクトには<code>__proto__</code>という謎のプロパティが既に設定されています。</p>
+<hr>
+<h5 id="__proto__とは">__proto__とは</h5>
+<p><code>__proto__</code>の正体は自身の継承元や生成元となるオブジェクトの<code>prototype</code>へのゲッター・セッターです。</p>
+<pre tabindex="0"><code>bazelard.__proto__ === Fag.prototype //true
+zelfikar.__proto__ === AnotherFag.prototype //true
+</code></pre><p>図解するとこんな感じです。(FagクラスとAnotherFagクラスの__proto__は省いています。あと分かり辛かったらすみません。)
+<img src="/img/pp.png" alt="pp.png"></p>
+<hr>
+<h5 id="プロトタイプチェーンとは">プロトタイプチェーンとは</h5>
+<p>プロトタイプチェーンはオブジェクトのプロパティやメソッドを探すときに<code>__proto__</code>内を辿っていき<code>__proto__</code>がnullになるまで探索されることをいいます。</p>
+<p>bazelard.hogeを探すときの挙動はこんな感じです</p>
+<pre tabindex="0"><code>1、bazelard直下にあるhogeプロパティを探す。見つからない。
+2、bazelard.__proto__にあるhogeプロパティを探す。見つからない。//この__proto__が参照する先はFag.prototypeです
+3、bazelard.__proto__.__proto__にあるhogeプロパティを探す。見つからない。//この__proto__が参照する先はObject.prototypeです
+4、bazelard.__proto__.__proto__.__proto__を探索しようとするが__proto__がnullを返すので探索が終了
+</code></pre><hr>
+<h1 id="プロトタイプ汚染">プロトタイプ汚染</h1>
+<p>では本題のプロトタイプ汚染に入りたいと思います。また、コードを以下のように改変してます。</p>
+<pre tabindex="0"><code>class Fag{
+    constructor(name){
+        this.name = name
+    }
+}
+
+Fag.__proto__.__proto__.hoge = &#39;test&#39;
+ 
+let bazelard = new Fag(&#39;Bazelard&#39;)
+let gourai = new Fag(&#39;Gourai)
+</code></pre><h6 id="プロトタイプ汚染とは-1">プロトタイプ汚染とは</h6>
+<p>ではもし<code>Fag.__proto__.__proto__.hoge</code>に適当な値をセットし(上記7行目)、<code>bazelard.hoge</code>あるいは<code>gourai.hoge</code>を探した場合はどうなるのでしょうか？<br>
+結果は値を返します。</p>
+<pre tabindex="0"><code>bazelard.hoge //test
+gourai.hoge //test
+</code></pre><p>また、<code>Fag.__proto__.proto__</code>の参照先は<code>Object.prototype</code>なのでセットした値はほぼ全てのオブジェクトにも影響を与えます。</p>
+<pre tabindex="0"><code>window.hoge //test
+document.hoge //test
+</code></pre><p>このように<code>__proto__</code>をつたって任意のオブジェクトを汚染することをプロトタイプ汚染と呼びます。</p>
+<hr>
+<h6 id="プロトタイプ汚染の発生原因">プロトタイプ汚染の発生原因</h6>
+<p>プロトタイプ汚染の発生原因となるコードはざっくりとすると以下のようなオブジェクトのプロパティを2つ以上、任意に指定できる場合に発生します。</p>
+<pre tabindex="0"><code>let a = process.argv[2] //__proto__を想定
+let b = process.argv[3] //なんでもいいです
+let c = process.argv[4] //なんでもいいです
+let obj = {}
+obj[a][b] = c
+
+console.log(({})[b])
+</code></pre><hr>
+<h6 id="ガジェット">ガジェット</h6>
+<p>攻撃に利用されるオブジェクトのことを「ガジェット」と呼びます。主に未定義のプロパティが狙われます。</p>
+<hr>
+<h6 id="成功しても攻撃が刺さらない例">成功しても攻撃が刺さらない例</h6>
+<p>プロトタイプ汚染ができただけでは潜在的な脆弱性にしかならず、ガジェットを見つけだすことで攻撃に繋がる脆弱性でもあります。</p>
+<pre tabindex="0"><code>//ガジェットが存在しない例
+Object.prototype.hoge = &#34;1&#34; //汚染に成功した
+
+let code = &#34;1 + 1&#34;
+eval(code)
+</code></pre><p>この例ではガジェットがそもそも存在しないので汚染しても特に何もできないです。</p>
+<pre tabindex="0"><code>//プロパティが初期化されている例
+Object.prototype.isAdmin = &#34;1&#34; //汚染に成功した
+
+user = {
+    name: &#34;Ao Gennai&#34;,
+    isAdmin: false
+}
+
+if (user.isAdmin){
+    //何かの処理
+}
+</code></pre><p>この例では<code>Object.prototype.idAdmin</code>より<code>user.isAdmin</code>のほうが探索順位が上位なので攻撃は刺さらないです。</p>
+<hr>
+<h1 id="プロトタイプ汚染の見つけ方">プロトタイプ汚染の見つけ方</h1>
+<h6 id="フロントエンド側">フロントエンド側</h6>
+<p>フロントエンド側は主にXSSの実行に利用されており、
+見つけ方は至って簡単でURLのパラメータやハッシュに<code>__proto__[cat]=neko</code>や<code>__proto__.dog=inu</code>などを付与して
+アクセスした後にコンソール画面で<code>cat</code>や<code>dog</code>などが定義されているかをチェックするだけです。<br>
+ここら辺の脆弱なライブラリなどは有志の方がまとめて下さっているのでこちら <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>をみてみるのがいいと思います。<br>
+また、electronだとXSSでのプロトタイプ汚染からRCEに繋がる恐れがあるので注意したほうがいいと思います。</p>
+<h6 id="バックエンド側">バックエンド側</h6>
+<p>バックエンドは最悪RCEに発展することがありとても危険なところですが、実装次第なところがありこれといった見つけ方はないと思います。
+RCEに持ってこれた例はknqyf263さんがいい感じにまとめ <sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>て下さっているのでこちら <sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>をみていただいた方がいいと思います。<br>
+(投げやりでごめんなさい)</p>
+<h1 id="終わりに">終わりに</h1>
+<p>この脆弱性で攻撃する際にはプロトタイプ汚染を行う箇所とガジェット(汚染を行う対象)の両方を見つける必要があり、他の脆弱性よりも見つける手間がかかりますが、
+XSSからRCEなど様々な脆弱性につなげることが出来るという汎用性が高く危険な脆弱性です。<br>
+また、認知度やこの脆弱性を理解することの難しさの相まってか、多数のwebサイト・アプリケーションにこの脆弱性が存在しXSSやRCEができたという研究 <sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>結果 <sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup>があります。<br>
+僕自身のプロトタイプチェーン周りの知識は浅いために間違いは無いように書いていますが、
+もしかしたら誤って書いている可能性があるため、この記事の他にも別の記事も読み比べることをおすすめします。
+この記事が少しでも何かの参考になれば幸いです。</p>
+<hr>
+<h3 id="参考">参考</h3>
+<p><a href="https://maeharin.hatenablog.com/entry/20130215/javascript_prototype_chain">https://maeharin.hatenablog.com/entry/20130215/javascript_prototype_chain</a><br>
+<a href="https://infosecwriteups.com/javascript-prototype-pollution-practice-of-finding-and-exploitation-f97284333b2">https://infosecwriteups.com/javascript-prototype-pollution-practice-of-finding-and-exploitation-f97284333b2</a><br>
+<a href="https://qiita.com/arakawashintaro/items/9216a1fcfb496556cf17">https://qiita.com/arakawashintaro/items/9216a1fcfb496556cf17</a></p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p><a href="https://github.com/BlackFan/client-side-prototype-pollution">https://github.com/BlackFan/client-side-prototype-pollution</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p><a href="https://knqyf263.hatenablog.com/entry/2020/08/11/050342">https://knqyf263.hatenablog.com/entry/2020/08/11/050342</a>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p><a href="https://github.com/msrkp/electron-research">https://github.com/msrkp/electron-research</a>&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4" role="doc-endnote">
+<p><a href="https://blog.s1r1us.ninja/research/PP">https://blog.s1r1us.ninja/research/PP</a>&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">タグ</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3/">セキュリティ</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/%E3%83%97%E3%83%AD%E3%83%88%E3%82%BF%E3%82%A4%E3%83%97%E6%B1%9A%E6%9F%93/">プロトタイプ汚染</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">次</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">前</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="この記事を共有する">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+  
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="トップに戻る">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2022 こんな体験したことある？. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">次</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">前</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="この記事を共有する">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+  
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="トップに戻る">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+    <h4 id="about-card-name"></h4>
+    
+    
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('http://a1ise.github.io/background.png');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="http://a1ise.github.io/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

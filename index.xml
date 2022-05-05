@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>こんな体験したことある？</title>
+    <link>http://a1ise.github.io/</link>
+    <description>Recent content on こんな体験したことある？</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 05 May 2022 19:35:58 +0900</lastBuildDate><atom:link href="http://a1ise.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>プロトタイプ汚染を理解したかった</title>
+      <link>http://a1ise.github.io/page/pp/</link>
+      <pubDate>Thu, 05 May 2022 19:35:58 +0900</pubDate>
+      
+      <guid>http://a1ise.github.io/page/pp/</guid>
+      <description>プロトタイプ汚染とは？ ざっくりと簡単にプロトタイプ汚染を説明すると、JavaScript(以下js)のオブジェクトに存在する__proto__というプロパティをつたって 任意のプロパティを追加・上書きしてオブジェクトの振る舞いを変える攻撃手法のことです。
+この手法を理解するためには、jsのプロトタイプチェーンに対する理解が必要なのでまずこちらから説明したいと思います。
+ プロトタイプとプロトタイプチェーン 以下の簡単なクラスなどが書かれているコードがあります。
+class Fag{ constructor(name){ this.name = name } } class AnotherFag extends Fag{ constructor(name, modelName){ super(name) this.modelName = modelName } } let bazelard = new Fag(&amp;#39;Bazelard&amp;#39;) let zelfikar = new AnotherFag(&amp;#39;Zelfikar&amp;#39;, &amp;#39;bazelard&amp;#39;) このコードにはFagクラスとそれを継承したAnotherFagクラスとそれぞれをインスタス化したbazelardオブジェクトとzelfikarオブジェクトが存在します。
+そしてこのbazelardとzelfikarオブジェクトには__proto__という謎のプロパティが既に設定されています。
+ __proto__とは __proto__の正体は自身の継承元や生成元となるオブジェクトのprototypeへのゲッター・セッターです。
+bazelard.__proto__ === Fag.prototype //true zelfikar.__proto__ === AnotherFag.prototype //true 図解するとこんな感じです。(FagクラスとAnotherFagクラスの__proto__は省いています。あと分かり辛かったらすみません。)  プロトタイプチェーンとは プロトタイプチェーンはオブジェクトのプロパティやメソッドを探すときに__proto__内を辿っていき__proto__がnullになるまで探索されることをいいます。
+bazelard.hogeを探すときの挙動はこんな感じです
+1、bazelard直下にあるhogeプロパティを探す。見つからない。 2、bazelard.__proto__にあるhogeプロパティを探す。見つからない。//この__proto__が参照する先はFag.prototypeです 3、bazelard.__proto__.__proto__にあるhogeプロパティを探す。見つからない。//この__proto__が参照する先はObject.prototypeです 4、bazelard.__proto__.__proto__.__proto__を探索しようとするが__proto__がnullを返すので探索が終了  プロトタイプ汚染 では本題のプロトタイプ汚染に入りたいと思います。また、コードを以下のように改変してます。
+class Fag{ constructor(name){ this.name = name } } Fag.</description>
+    </item>
+    
+  </channel>
+</rss>
